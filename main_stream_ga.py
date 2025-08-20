@@ -11,10 +11,10 @@ _logging_format = "%(asctime)s - %(name)s.%(funcName)s +%(lineno)s - %(levelname
 _logging.basicConfig(level=_logging_level, format=_logging_format)
 
 ############################################INPUTS############################################
-accelerator = "stream/inputs/examples/hardware/tpu_like_quad_core.yaml"
+accelerator = "stream/inputs/examples/hardware/aimc_single_core.yaml"
 workload_path = "stream/inputs/examples/workload/resnet18.onnx"
-mapping_path = "stream/inputs/examples/mapping/tpu_like_quad_core_ga.yaml"
-mode = "fused"
+mapping_path = "stream/inputs/examples/mapping/aimc_ga.yaml"
+mode = "lbl"
 layer_stacks = [tuple(range(0, 11)), tuple(range(11, 22))] + list((i,) for i in range(22, 49))
 nb_ga_generations = 4
 nb_ga_individuals = 4
@@ -62,7 +62,7 @@ cost_lut_path = f"outputs/{experiment_id}/cost_lut.pickle"
 cost_lut = CostModelEvaluationLUT(cost_lut_path)
 
 # Plotting memory usage of best SCME
-plot_memory_usage(scme, section_start_percent, percent_shown, fig_path=memory_fig_path)
+plot_memory_usage(scme, section_start_percent, percent_shown, fig_path=memory_fig_path, show_dram=True)#add show dram mail Arne
 
 # Save json for perfetto visualization (Visualize at http://ui.perfetto.dev/)
 convert_scme_to_perfetto_json(scme, cost_lut, json_path=json_path)

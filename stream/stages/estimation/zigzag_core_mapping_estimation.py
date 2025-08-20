@@ -124,9 +124,13 @@ class ZigZagCoreMappingEstimationStage(Stage):
                     # Attempt to override the node's spatial mapping based on the core's dataflow
                     if core.dataflows:
                         node_duplicate.spatial_mapping = core.dataflows
-
+                        #print('node duplicate spatial mapping ' + node_duplicate.spatial_mapping)
+                        #print('node duplicate layer dim sizes ' + node_duplicate.layer_dim_sizes)
+                    
+                    logger.info(f"node duplicate spatial mapping {node_duplicate.spatial_mapping} for node {node}")
+                    logger.info(f"node duplicate layer dim sizes {node_duplicate.layer_dim_sizes} for node {node} ")
                     cme = self.run_zigzag(node_duplicate, too_large_operands_for_cme, core_id)
-                    cme = self.increase_cc_per_op(cme, node.type)
+                    #cme = self.increase_cc_per_op(cme, node.type) #comment mail Arne
 
                     node_duplicate.set_chosen_core_allocation(None)  # Reset the node's chosen core allocation
                     self.cost_lut.add_cme(node, core, cme, allow_overwrite=False)
