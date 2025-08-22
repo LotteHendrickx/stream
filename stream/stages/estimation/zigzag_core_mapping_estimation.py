@@ -196,6 +196,13 @@ class ZigZagCoreMappingEstimationStage(Stage):
         if too_large_operands:
             core = self.add_offchip_to_core(core, too_large_operands, node.id)
 
+        # Determine the number of spatial mappings to generate based on the node type
+        match node.type:
+            case "relu":
+                nb_spatial_mappings_to_generate = 1
+            case _:
+                nb_spatial_mappings_to_generate = 3
+
         main_stage = MainStage(
             [  # Initializes the MainStage as entry point
                 MinimalBandwidthLatencyStage,  # type: ignore
@@ -211,6 +218,7 @@ class ZigZagCoreMappingEstimationStage(Stage):
             temporal_mapping_type=self.temporal_mapping_type,
             nb_parallel_nodes=nb_parallel_nodes,
             has_dram_level=(len(too_large_operands) > 0),
+            nb_mappings_generated=nb_spatial_mappings_to_generate,
         )
         return main_stage
 
